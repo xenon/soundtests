@@ -1,0 +1,5 @@
+[workspace]
+members = ["p1hellosine", "p2samples", "p3mix"]
+default-members = ["p1hellosine", "p2samples", "p3mix"]
+
+resolver = "2"
