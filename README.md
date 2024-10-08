@@ -21,6 +21,8 @@ Various small test programs that I am creating to learn more about audio process
 - Added ``Silence`` sample that has no effect when mixing just for testing
 - Will mix all the sounds and normalize the amplitude of the combined sample
 - ``RunArgs::generate_arrays`` is still supported so you can view the mixed samples using ``tools/plot.py``
+### RunArgs::generate_arrays extension new functionality
+- Now also generates a ``samples.wav`` file in addition to the ``samples.txt`` so you can listen to the audio
 ### Configurable constants
 Both of these optimizations are on by default just to make the code run fast. Seems to be fine but I haven't proven the correctness of them to myself so I made them toggleable.
 - FAST_AMPLITUDE - Take a shortcut guess when calculating amplitude. Much faster and probably good enough

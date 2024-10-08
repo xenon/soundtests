@@ -5,6 +5,9 @@ use cpal::{
     traits::{DeviceTrait, HostTrait, StreamTrait},
     Device, FromSample, Sample, SizedSample, StreamConfig, SupportedStreamConfig,
 };
+use wav::raw_audio_to_wav;
+
+mod wav;
 
 fn setup_default_device_default_config(quiet: bool) -> (Device, SupportedStreamConfig) {
     if !quiet {
@@ -254,11 +257,22 @@ fn run<T: SizedSample + FromSample<f32>>(dev: &Device, conf: StreamConfig, args:
             vals.push(acc);
         }
         let mut file = File::create("samples.txt").expect("Failed to create file!");
-        for val in vals {
+        for val in vals.iter() {
             write!(file, "{} ", val).expect("Failed to write file!");
         }
         file.flush().expect("Failed to flush the file buffer");
-        eprintln!("FILE WRITE SUCCESS... EXITING");
+        eprintln!("FILE WRITE SUCCESS...");
+
+        let vals_u16: Vec<i16> = vals
+            .iter()
+            .map(|f| ((*f * 32768_f32).round() as i64).clamp(-32768, 32767) as i16)
+            .collect();
+        let bytes = raw_audio_to_wav(vals_u16, conf.sample_rate.0);
+        let mut wavefile = File::create("samples.wav").expect("Failed to create file!");
+        wavefile
+            .write(&bytes)
+            .expect("Failed to write the samples to wave!");
+        eprintln!("WAVE FILE WRITE SUCCESS...");
         return;
     }
 
