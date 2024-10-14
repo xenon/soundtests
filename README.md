@@ -27,3 +27,35 @@ Various small test programs that I am creating to learn more about audio process
 Both of these optimizations are on by default just to make the code run fast. Seems to be fine but I haven't proven the correctness of them to myself so I made them toggleable.
 - FAST_AMPLITUDE - Take a shortcut guess when calculating amplitude. Much faster and probably good enough
 - CAP_ARRAY_GENERATION_SIZE - Another shortcut guess when calculating amplitude. Can stop giant sample expansions.
+## 4: FM Synth - Simple FM Synthesis
+- Still specify a list of waveforms as in '3: Mix'
+- However these waveforms are used for a different purpose now
+- All waveforms before the final (last in the list) are used as modulators
+- The final waveform is frequency modified (modulators) by all waveforms before it
+- It goes in a linear chain from waveform 1, waveform 2, ... waveform N, carrier
+- More complex FM synthesis chains/trees are possible but I've just done the simplest thing here
+## FM synthesis examples
+Be sure to use the plotting tool to make sense of these, FM synthesis can be really hard to predict.
+### 1 - Square into Sine
+```rust
+(WaveformKind::Square, 440.0),
+(WaveformKind::Sine, 440.0),
+```
+Explained: When the square is 1 (first 1/2 of the cycle) it adds 440Hz to the sine making it 880Hz. But when it is 0 (second 1/2 of the cycle) it subtracts 440Hz making it 0Hz
+### 2 - Square into Sine with wobble
+```rust
+(WaveformKind::Sine, 4.4),
+(WaveformKind::Square, 440.0),
+(WaveformKind::Sine, 440.0),
+```
+- Same as previous example *except* the 4.4Hz sine controlling the square makes the waveform 'wobble' 
+# Tools (python scripts)
+- ``plot.py`` and ``plot2.py`` are interchangeable
+- ``plot.py`` uses native desktop rendering
+- ``plot2.py`` uses browser rendering
+# Tests (as in not sure if they're good)
+## 1: Lowpass
+- Modify '3: Mix' and add a naive first order low pass filter
+- Only parameter is a cutoff frequency
+- Seems to impart noise and phase shift on the output
+- Needs more research...

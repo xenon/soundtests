@@ -446,6 +446,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "p4fmsynth"
+version = "0.1.0"
+dependencies = [
+ "cpal",
+]
+
+[[package]]
 name = "pkg-config"
 version = "0.3.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -537,6 +544,13 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-ident",
+]
+
+[[package]]
+name = "test1_lowpass"
+version = "0.1.0"
+dependencies = [
+ "cpal",
 ]
 
 [[package]]

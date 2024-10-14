@@ -1,5 +1,5 @@
 [workspace]
-members = ["p1hellosine", "p2samples", "p3mix"]
-default-members = ["p1hellosine", "p2samples", "p3mix"]
+members = ["p1hellosine", "p2samples", "p3mix", "p4fmsynth", "test1_lowpass"]
+default-members = ["p1hellosine", "p2samples", "p3mix", "p4fmsynth", "test1_lowpass"]
 
 resolver = "2"
