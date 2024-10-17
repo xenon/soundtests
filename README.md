@@ -18,7 +18,7 @@ Various small test programs that I am creating to learn more about audio process
 - Adds new functionality on to '2: Samples'
 - Can now mix and play many samples at once
 - RunArgs struct now takes a Vec of (Sample, Freq) pairs to specify the sounds you want to mix
-- Added ``Silence`` sample that has no effect when mixing just for testing
+- Added ``Silence`` waveform that has no effect when mixing just for testing
 - Will mix all the sounds and normalize the amplitude of the combined sample
 - ``RunArgs::generate_arrays`` is still supported so you can view the mixed samples using ``tools/plot.py``
 ### RunArgs::generate_arrays extension new functionality
@@ -28,13 +28,36 @@ Both of these optimizations are on by default just to make the code run fast. Se
 - FAST_AMPLITUDE - Take a shortcut guess when calculating amplitude. Much faster and probably good enough
 - CAP_ARRAY_GENERATION_SIZE - Another shortcut guess when calculating amplitude. Can stop giant sample expansions.
 ## 4: FM Synth - Simple FM Synthesis
-- Still specify a list of waveforms as in '3: Mix'
-- However these waveforms are used for a different purpose now
-- All waveforms before the final (last in the list) are used as modulators
-- The final waveform is frequency modified (modulators) by all waveforms before it
-- It goes in a linear chain from waveform 1, waveform 2, ... waveform N, carrier
+- Modifies '3: Samples' but is not additive, removes the ability to mix
+- RunArgs changed. Takes a 'carrier' (Wave, Freq) for the base waveform and a list of modulators
+- Modulators consist of (Wave, Freq, Depth)
+- The final waveform is frequency modified (by the list of modulators, first to last)
+- Modulators run in a linear chain progressively modifying each others output
 - More complex FM synthesis chains/trees are possible but I've just done the simplest thing here
-## FM synthesis examples
+- Added a new waveform ``OnOff`` that is 1 for half its period than 0 for the rest (useful for modulators?)
+- RunArgs ``hide_device_out`` will disable audio device information prints but not other information.. is overriden by ``quiet`` flag
+- Also normalized the sine wave (can correctly generate sample values after 1sec of playback)
+## FM Synth example
+The following setup sounds like a harsher telephone ringing sound:
+```rust
+carrier: (WaveformKind::Sine, 440.0),
+modulators: vec![
+    (WaveformKind::Square, 1760.0, 22.0),
+],
+```
+# Tools (python scripts)
+- ``plot.py`` and ``plot2.py`` are interchangeable
+- ``plot.py`` uses native desktop rendering
+- ``plot2.py`` uses browser rendering
+# Tests (as in not sure if they're good)
+## 1: Lowpass
+- Modify '3: Mix' and add a naive first order low pass filter
+- Only parameter is a cutoff frequency
+- Seems to impart noise and phase shift on the output
+- Needs more research...
+# Outdated documentation
+## OLD FM synthesis examples
+**WARNING:** These only apply to an older version (commit hash ``c4b68dcd108e497fe95b117fec56942d9af448b1``) and ``p4fmsynth`` was changed after.
 Be sure to use the plotting tool to make sense of these, FM synthesis can be really hard to predict.
 ### 1 - Square into Sine
 ```rust
@@ -49,13 +72,3 @@ Explained: When the square is 1 (first 1/2 of the cycle) it adds 440Hz to the si
 (WaveformKind::Sine, 440.0),
 ```
 - Same as previous example *except* the 4.4Hz sine controlling the square makes the waveform 'wobble' 
-# Tools (python scripts)
-- ``plot.py`` and ``plot2.py`` are interchangeable
-- ``plot.py`` uses native desktop rendering
-- ``plot2.py`` uses browser rendering
-# Tests (as in not sure if they're good)
-## 1: Lowpass
-- Modify '3: Mix' and add a naive first order low pass filter
-- Only parameter is a cutoff frequency
-- Seems to impart noise and phase shift on the output
-- Needs more research...
