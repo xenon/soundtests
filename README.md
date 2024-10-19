@@ -28,7 +28,7 @@ Both of these optimizations are on by default just to make the code run fast. Se
 - FAST_AMPLITUDE - Take a shortcut guess when calculating amplitude. Much faster and probably good enough
 - CAP_ARRAY_GENERATION_SIZE - Another shortcut guess when calculating amplitude. Can stop giant sample expansions.
 ## 4: FM Synth - Simple FM Synthesis
-- Modifies '3: Samples' but is not additive, removes the ability to mix
+- Modifies '3: Mix' but is not additive, removes the ability to mix
 - RunArgs changed. Takes a 'carrier' (Wave, Freq) for the base waveform and a list of modulators
 - Modulators consist of (Wave, Freq, Depth)
 - The final waveform is frequency modified (by the list of modulators, first to last)
