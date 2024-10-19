@@ -55,6 +55,14 @@ modulators: vec![
 - Only parameter is a cutoff frequency
 - Seems to impart noise and phase shift on the output
 - Needs more research...
+## 2: Play midi input
+- Modify '3: Mix' adding midi reading
+- Keep track of currently activated notes and their velocities, mixes them
+- Scales the linear midi velocities into an exponential to guess/match perceived loudness
+- Lets you pick your midi device and wave choice
+- 'Unlimited' polyphony
+- BASIC MIDI SUPPORT INCLUDES: channel 0, Commands: Note on, Note off
+- I think it has a decent amount of delay from keypress -> note heard.. not sure
 # Outdated documentation
 ## OLD FM synthesis examples
 **WARNING:** These only apply to an older version (commit hash ``c4b68dcd108e497fe95b117fec56942d9af448b1``) and ``p4fmsynth`` was changed after.

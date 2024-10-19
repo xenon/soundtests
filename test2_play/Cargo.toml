@@ -1,0 +1,9 @@
+[package]
+name = "test2_play"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cpal = "0.15.3"
+midir = "0.10.0"
+ctrlc = "3.4.5"
